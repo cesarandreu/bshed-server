@@ -1,0 +1,28 @@
+{
+  "name": "bshed-server",
+  "version": "0.0.0",
+  "description": "bshed-server for bshed-client",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "César Andreu <cesarandreu@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "koa": "^0.5.2",
+    "lodash": "^2.4.1",
+    "koa-router": "^3.1.2",
+    "koa-json": "0.0.2",
+    "koa-logger": "^1.2.0",
+    "koa-mount": "^1.2.5",
+    "thunkify": "0.0.1",
+    "co": "^3.0.5",
+    "rethinkdbdash": "^1.12.1",
+    "validator": "^3.5.1",
+    "co-busboy": "^1.0.2",
+    "node-uuid": "^1.4.1",
+    "co-fs": "^1.2.0",
+    "koa-static": "^1.4.3",
+    "mime": "^1.2.11"
+  }
+}
