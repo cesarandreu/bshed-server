@@ -1,7 +1,6 @@
 'use strict';
 
-var parse = require('co-busboy'),
-  bikesheds = require('../models/bikesheds');
+var bikesheds = require('../models/bikesheds');
 
 exports.create = function *create() {
 
@@ -9,7 +8,6 @@ exports.create = function *create() {
   // Check that there's at least 2 files
   // All files must be mime type image
   // Check fields validation
-
   this.req.field.id = this.id;
   var result = bikesheds.create(this.req.field, this.req.files);
   this.body = result.new_val;
@@ -33,21 +31,7 @@ exports.get = function *get() {
 
 exports.rate = function *rate() {
 
-  var r = this.rethinkdb,
-    parts = parse(this, {
-      autoFields: true,
-      limits: {
-        files: 1,
-        fileSize: 1
-      }
-    }),
-    part;
-
-  while((part = yield parts)) {
-    part.resume();
-  }
-
-  this.req.field = parts.field || {};
+  var r = this.rethinkdb;
 
   var action;
   if (this.method === 'PUT') {

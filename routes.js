@@ -10,8 +10,8 @@ module.exports = function routes() {
     .get('/bikesheds', bikesheds.list)
     .post('/bikesheds', upload.files, bikesheds.create)
     .get('/bikesheds/:bikeshedId', bikesheds.get)
-    .put('/bikesheds/:bikeshedId/vote', bikesheds.rate)
-    .del('/bikesheds/:bikeshedId/vote', bikesheds.rate);
+    .put('/bikesheds/:bikeshedId/vote', upload.form, bikesheds.rate)
+    .del('/bikesheds/:bikeshedId/vote', upload.form, bikesheds.rate);
 
   return bshed.middleware();
 };

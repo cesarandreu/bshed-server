@@ -4,10 +4,15 @@
   "description": "bshed-server for bshed-client",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node --harmony index.js",
+    "debug": "node debug --harmony index.js",
+    "test": "PORT=9999 NODE_ENV=test mocha --harmony -R spec --recursive"
   },
   "author": "César Andreu <cesarandreu@gmail.com>",
   "license": "MIT",
+  "engine": {
+    "node": ">= 11.12"
+  },
   "dependencies": {
     "koa": "^0.5.2",
     "lodash": "^2.4.1",
@@ -24,5 +29,9 @@
     "co-fs": "^1.2.0",
     "koa-static": "^1.4.3",
     "mime": "^1.2.11"
+  },
+  "devDependencies": {
+    "mocha": "^1.18.2",
+    "supertest": "^0.10.0"
   }
 }
