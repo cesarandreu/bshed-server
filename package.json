@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node --harmony index.js",
     "debug": "node debug --harmony index.js",
-    "test": "PORT=9999 NODE_ENV=test mocha --harmony -R spec --recursive"
+    "test": "PORT=9999 NODE_ENV=test mocha --harmony -R spec test/*.test.js",
+    "dev": "./node_modules/.bin/nodemon --harmony --debug index.js"
   },
   "author": "César Andreu <cesarandreu@gmail.com>",
   "license": "MIT",
@@ -28,10 +29,13 @@
     "node-uuid": "^1.4.1",
     "co-fs": "^1.2.0",
     "koa-static": "^1.4.3",
-    "mime": "^1.2.11"
+    "mime": "^1.2.11",
+    "q": "^1.0.1"
   },
   "devDependencies": {
     "mocha": "^1.18.2",
-    "supertest": "^0.10.0"
+    "supertest": "^0.10.0",
+    "nodemon": "^1.0.17",
+    "should": "^3.3.1"
   }
 }

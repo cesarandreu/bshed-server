@@ -4,6 +4,7 @@ module.exports = {
   database: {
     host: 'localhost',
     port: 28015,
-    db: 'bshed'
-  }
+    db: 'bshed_test'
+  },
+  port: 4000
 };

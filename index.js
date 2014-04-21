@@ -6,35 +6,49 @@ var koa = require('koa'),
     mount = require('koa-mount'),
     serve = require('koa-static'),
     uuid = require('node-uuid'),
+    co = require('co'),
 
     app = koa(),
     config = require('./config'),
     routes = require('./routes'),
     models = require('./models'),
-    rethinkdb = require('rethinkdbdash')(config.database);
+    rethinkdbdash = require('rethinkdbdash'),
+    rethinkdbSeed = require('./config/rethinkdb-seed');
 
-app.env = config.environment;
-app.config = config;
+module.exports = app;
 
-// Initialize all models with the database instance
-models.initialize(rethinkdb);
+app.init = co(function *() {
 
-if (config.environment === 'development') {
-  app.use(logger());
-  app.use(json());
-}
+  // Initialize rethinkdb and models with the database instance
+  yield rethinkdbSeed();
+  var rethinkdb = rethinkdbdash(config.database);
+  models.initialize(rethinkdb);
 
-// Handle invalid forms
-app.use(require('./middleware/upload').safe);
+  app.env = config.environment;
+  app.config = config;
 
-// Assigns the request a unique id, assigns the database instance
-app.use(function *(next) {
-  this.id = uuid.v1();
-  this.rethinkdb = rethinkdb;
-  yield next;
+  if (config.environment === 'development') {
+    app.use(logger());
+    app.use(json());
+  }
+
+  // Handle invalid forms
+  app.use(require('./middleware/upload').safe);
+
+  // Assigns the request a unique id
+  // aAssigns the database instance
+  app.use(function *(next) {
+    this.id = uuid.v1();
+    this.rethinkdb = rethinkdb;
+    yield next;
+  });
+
+  app.use(mount('/api', routes()));
+  app.use(mount('/public', serve(config.upload.folder)));
+
+  app.server = app.listen(config.port);
 });
 
-app.use(mount('/api', routes()));
-app.use(mount('/public', serve(config.upload.folder)));
-
-app.listen(config.port);
+if (!module.parent) {
+  app.init();
+}

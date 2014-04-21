@@ -9,7 +9,17 @@ exports.create = function *create() {
   // All files must be mime type image
   // Check fields validation
   this.req.field.id = this.id;
-  var result = bikesheds.create(this.req.field, this.req.files);
+  var result;
+  try {
+    result = yield bikesheds.create(this.req.field, this.req.files);
+  } catch (e) {
+    if (e.expose) {
+      this.throw(422, e.message);
+    } else {
+      this.throw(500, 'ERROR');
+    }
+  }
+
   this.body = result.new_val;
 
 };

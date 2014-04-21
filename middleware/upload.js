@@ -33,7 +33,7 @@ exports.files = function *filesUpload(next) {
     }}),
     files = [],
     requestPath = path.join(
-      path.dirname(require.main.filename),
+      this.app.config.root,
       this.app.config.upload.folder, this.id
     ),
     part,
@@ -78,14 +78,14 @@ exports.files = function *filesUpload(next) {
     try {
       for (var i = files.length - 1; i >= 0; i--) {
         var rmFile = path.join(
-          path.dirname(require.main.filename),
+          this.app.config.root,
           files[i].path
         );
         yield cfs.unlink(rmFile);
       }
 
       var rmDirectory = path.join(
-        path.dirname(require.main.filename),
+        this.app.config.root,
         this.app.config.upload.folder,
         this.id
       );

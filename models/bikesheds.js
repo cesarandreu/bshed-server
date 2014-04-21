@@ -6,6 +6,8 @@ var r;
 var TABLE = 'bikesheds';
 var _ = require('lodash');
 
+exports.TABLE = TABLE;
+
 exports.initialize = function initialize(db) {
   r = db;
 };
@@ -15,13 +17,20 @@ exports.get = function *get(id) {
 };
 
 exports.create = function *create(field, files) {
+  var e;
+
+  if (files.length < 2) {
+    e = new Error('at least two files required');
+    e.expose = true;
+    throw e;
+  }
 
   var bikeshed = {
     id: field.id,
     time: _.now(),
     name: field.name || '',
     description: field.description || '',
-    hidden: field.hidden || false,
+    hidden: (field.hidden === 'true') || false,
     limit: _.parseInt(field.limit) || 60,
     totalVotes: 0
   };
@@ -36,8 +45,6 @@ exports.create = function *create(field, files) {
     };
   }
 
-  var result = yield r.table('bikesheds').insert(bikeshed, {returnVals: true}).run();
-
-  return result;
+  return yield r.table('bikesheds').insert(bikeshed, {returnVals: true}).run();
 
 };
